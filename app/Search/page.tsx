@@ -2,13 +2,13 @@
 
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import SkeletonCard from './../components/ui/SkeletonCard';
 import SearchResultCard from '../components/ui/SearchResultCard';
 
-export default function SearchResults() {
+function SearchResultsContent() {
   const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
@@ -101,5 +101,23 @@ export default function SearchResults() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function SearchResults() {
+  return (
+    <Suspense
+      fallback={
+        <div className="px-4 py-6 max-w-7xl mx-auto text-white">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4">
+            {Array.from({ length: 10 }).map((_, idx) => (
+              <SkeletonCard key={idx} />
+            ))}
+          </div>
+        </div>
+      }
+    >
+      <SearchResultsContent />
+    </Suspense>
   );
 }
