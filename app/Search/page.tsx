@@ -5,7 +5,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import SkeletonCard from '../components/ui/SkeletonCard';
+import SkeletonCard from './../components/ui/SkeletonCard';
 import SearchResultCard from '../components/ui/SearchResultCard';
 
 function SearchResultsContent() {
