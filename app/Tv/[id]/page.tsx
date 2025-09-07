@@ -1,6 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
-import SeasonAccordionWithEpisodes from "./../../components/ui/SeasonAccordionWithEpisodes";
+import SeasonAccordionWithEpisodes from "../../components/ui/SeasonAccordionWithEpisodes";
 
 interface Params {
   params: {
