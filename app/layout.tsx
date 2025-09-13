@@ -10,7 +10,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ALAN Movies",
+  title: "The Movies",
   description: "Watch and Chill",
 };
 
