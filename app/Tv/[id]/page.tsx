@@ -9,7 +9,7 @@ interface Params {
 }
 
 export default async function TvDetail({ params }: Params) {
-  const id = params.id; // ✅ Fix "should be awaited" warning
+  const id = params.id;
   const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
   // Fetch TV show details & trailer
@@ -67,7 +67,8 @@ export default async function TvDetail({ params }: Params) {
           {/* Overview */}
           <p className="text-gray-300 leading-relaxed mb-6">{tv.overview}</p>
 
-          <Link href={`/Watch/${id}`}>
+          {/* Fixed Watch Now Link */}
+          <Link href={`/Watch/${id}?type=tv&season=1&episode=1`}>
             <button className="bg-red-600 hover:bg-red-700 transition px-6 py-3 rounded-full shadow text-white font-semibold w-fit">
               ▶️ Watch Now
             </button>
