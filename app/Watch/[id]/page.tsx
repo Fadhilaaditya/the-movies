@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, FastForward } from "lucide-react";
 import { useEffect, useState } from "react";
+import EpisodeList from "@/app/components/ui/TvEpisodeList";
 
 interface Props {
   params: {
@@ -22,6 +23,7 @@ interface ContentData {
   overview: string;
   embedUrl: string;
   backUrl: string;
+  episodeName?: string;
 }
 
 export default function WatchMovie(props: Props) {
@@ -45,6 +47,7 @@ export default function WatchMovie(props: Props) {
         let overview = "";
         let embedUrl = "";
         let backUrl = "";
+        let episodeName = "";
 
         if (isTV || type === 'tv') {
           embedUrl = `https://vidsrc.icu/embed/tv/${id}/${season}/${episode}`;
@@ -55,6 +58,17 @@ export default function WatchMovie(props: Props) {
           title = `${tv.name} - Season ${season}, Episode ${episode}`;
           overview = tv.overview;
           backUrl = `/Tv/${id}`;
+          
+          // Get episode name
+          try {
+            const seasonRes = await axios.get(
+              `https://api.themoviedb.org/3/tv/${id}/season/${season}?api_key=${API_KEY}`
+            );
+            const currentEp = seasonRes.data.episodes?.find((ep: any) => ep.episode_number === parseInt(episode));
+            episodeName = currentEp ? currentEp.name : "";
+          } catch (error) {
+            console.error("Error fetching episode name:", error);
+          }
         } else {
           embedUrl = `https://vidsrc.icu/embed/movie/${id}`;
           const movieRes = await axios.get(
@@ -66,7 +80,7 @@ export default function WatchMovie(props: Props) {
           backUrl = `/Movie/${id}`;
         }
 
-        setContentData({ title, overview, embedUrl, backUrl });
+        setContentData({ title, overview, embedUrl, backUrl, episodeName });
       } catch (error) {
         console.error("Error fetching content:", error);
         setError("Failed to load content");
@@ -135,7 +149,12 @@ export default function WatchMovie(props: Props) {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-10 space-y-6">
         {/* Title */}
-        <h1 className="text-3xl md:text-4xl font-bold text-center">{contentData.title}</h1>
+        <div className="text-center">
+          <h1 className="text-3xl md:text-4xl font-bold">{contentData.title}</h1>
+          {isTV && contentData.episodeName && (
+            <p className="text-gray-400 mt-2">{contentData.episodeName}</p>
+          )}
+        </div>
 
         {/* Player */}
         <div className="aspect-video rounded-xl overflow-hidden shadow-lg border border-zinc-800">
@@ -157,6 +176,15 @@ export default function WatchMovie(props: Props) {
         <div className="mt-4 text-gray-300 text-sm md:text-base leading-relaxed">
           {contentData.overview || "No description available for this content."}
         </div>
+
+        {/* Episode List Component - Only for TV */}
+        {isTV && (
+          <EpisodeList 
+            tvId={id}
+            currentSeason={parseInt(season)}
+            currentEpisode={parseInt(episode)}
+          />
+        )}
       </div>
     </div>
   );
