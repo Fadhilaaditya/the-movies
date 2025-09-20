@@ -49,10 +49,10 @@ export default function Navbar() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm text-gray-300">
-            <Link href="/movies" className="flex items-center gap-1 hover:text-white transition">
+            <Link href="/Movie" className="flex items-center gap-1 hover:text-white transition">
               <Film size={16} /> Movies
             </Link>
-            <Link href="/tv" className="flex items-center gap-1 hover:text-white transition">
+            <Link href="/Tv" className="flex items-center gap-1 hover:text-white transition">
               <Tv size={16} /> TV Series
             </Link>
 
@@ -105,10 +105,10 @@ export default function Navbar() {
       {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div className="md:hidden mt-4 px-4 space-y-3">
-          <Link href="/movies" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white">
+          <Link href="/Movies" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white">
             <Film size={16} /> Movies
           </Link>
-          <Link href="/tv" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white">
+          <Link href="/Tv" className="flex items-center gap-2 text-sm text-gray-300 hover:text-white">
             <Tv size={16} /> TV Series
           </Link>
 
