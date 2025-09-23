@@ -49,14 +49,25 @@ export default function TvPage() {
     fetchGenres();
   }, [API_KEY]);
 
-  // Fetch featured TV shows (popular TV shows for featured section)
+  // Fetch DIFFERENT featured TV shows (trending + airing today + top rated)
   useEffect(() => {
     const fetchFeaturedTvShows = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&page=1`
-        );
-        setFeaturedTvShows(response.data.results.slice(0, 10)); // Top 10 for featured
+        // Mix trending, airing today, and top rated TV shows for featured section
+        const [trendingResponse, airingTodayResponse, topRatedResponse] = await Promise.all([
+          axios.get(`https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}`),
+          axios.get(`https://api.themoviedb.org/3/tv/airing_today?api_key=${API_KEY}&page=1`),
+          axios.get(`https://api.themoviedb.org/3/tv/top_rated?api_key=${API_KEY}&page=1`)
+        ]);
+
+        // Mix different sources for variety
+        const trendingShows = trendingResponse.data.results.slice(0, 4);
+        const airingShows = airingTodayResponse.data.results.slice(0, 3);
+        const topRatedShows = topRatedResponse.data.results.slice(0, 3);
+        
+        // Combine and create diverse featured content
+        const combinedFeatured = [...trendingShows, ...airingShows, ...topRatedShows];
+        setFeaturedTvShows(combinedFeatured.slice(0, 10));
       } catch (error) {
         console.error("Error fetching featured TV shows:", error);
       }
@@ -64,7 +75,7 @@ export default function TvPage() {
     fetchFeaturedTvShows();
   }, [API_KEY]);
 
-  // Fetch all TV shows
+  // Fetch all TV shows (discover with different criteria than featured)
   useEffect(() => {
     const fetchTvShows = async () => {
       setLoading(true);
@@ -74,6 +85,11 @@ export default function TvPage() {
         if (selectedGenre) {
           url += `&with_genres=${selectedGenre}`;
         }
+
+        // Add filters to get more recent and active TV shows
+        const currentYear = new Date().getFullYear();
+        url += `&first_air_date.gte=${currentYear - 5}-01-01`; // Shows from last 5 years
+        url += `&vote_count.gte=10`; // Shows with at least 10 votes for quality
 
         const response = await axios.get(url);
         setTvShows(response.data.results);
@@ -120,8 +136,9 @@ export default function TvPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen mt-15 bg-zinc-950 text-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
+
         {/* Featured TV Shows Section */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-6">
@@ -152,16 +169,31 @@ export default function TvPage() {
                     FEATURED
                   </div>
 
+                  {/* Rating Badge */}
+                  {show.vote_average > 0 && (
+                    <div className="absolute top-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                      <Star size={12} className="fill-yellow-400 text-yellow-400" />
+                      {show.vote_average.toFixed(1)}
+                    </div>
+                  )}
+
                   {/* TV Show Title Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                     <h3 className="text-white font-semibold text-sm line-clamp-2 mb-1">
                       {show.name}
                     </h3>
-                    {show.first_air_date && (
-                      <p className="text-gray-300 text-xs">
-                        {new Date(show.first_air_date).getFullYear()}
-                      </p>
-                    )}
+                    <div className="flex items-center justify-between text-xs">
+                      {show.first_air_date && (
+                        <p className="text-gray-300">
+                          {new Date(show.first_air_date).getFullYear()}
+                        </p>
+                      )}
+                      {show.origin_country && show.origin_country.length > 0 && (
+                        <p className="text-gray-400">
+                          {show.origin_country[0]}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Link>
@@ -204,16 +236,31 @@ export default function TvPage() {
                         )}
                       </div>
 
+                      {/* Rating Badge */}
+                      {show.vote_average > 0 && (
+                        <div className="absolute top-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                          <Star size={12} className="fill-yellow-400 text-yellow-400" />
+                          {show.vote_average.toFixed(1)}
+                        </div>
+                      )}
+
                       {/* TV Show Title Overlay */}
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
                         <h3 className="text-white font-semibold text-sm line-clamp-2 mb-1">
                           {show.name}
                         </h3>
-                        {show.first_air_date && (
-                          <p className="text-gray-300 text-xs">
-                            {new Date(show.first_air_date).getFullYear()}
-                          </p>
-                        )}
+                        <div className="flex items-center justify-between text-xs">
+                          {show.first_air_date && (
+                            <p className="text-gray-300">
+                              {new Date(show.first_air_date).getFullYear()}
+                            </p>
+                          )}
+                          {show.origin_country && show.origin_country.length > 0 && (
+                            <p className="text-gray-400">
+                              {show.origin_country[0]}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </Link>

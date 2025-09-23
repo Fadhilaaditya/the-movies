@@ -25,7 +25,7 @@ export default async function MovieDetail({
   const cast = movie.credits?.cast?.slice(0, 6) || [];
 
   return (
-    <div className="bg-zinc-950 text-white min-h-screen px-4 py-10">
+    <div className="bg-zinc-950 mt-15 text-white min-h-screen px-4 py-10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Poster */}
         <div className="w-full">

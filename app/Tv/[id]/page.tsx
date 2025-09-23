@@ -25,7 +25,7 @@ export default async function TvDetail({ params }: Params) {
   const cast = tv.credits?.cast?.slice(0, 12) || [];
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black mt-15 text-white min-h-screen">
       {/* Hero Section */}
       <div className="relative">
         {/* Backdrop */}

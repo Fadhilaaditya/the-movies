@@ -48,14 +48,23 @@ export default function MoviesPage() {
     fetchGenres();
   }, [API_KEY]);
 
-  // Fetch featured movies (popular movies for featured section)
+  // Fetch DIFFERENT featured movies (trending this week + top rated)
   useEffect(() => {
     const fetchFeaturedMovies = async () => {
       try {
-        const response = await axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&page=1`
-        );
-        setFeaturedMovies(response.data.results.slice(0, 10)); // Top 10 for featured
+        // Mix trending and top rated movies for featured section
+        const [trendingResponse, topRatedResponse] = await Promise.all([
+          axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`),
+          axios.get(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&page=1`)
+        ]);
+
+        // Mix trending (first 5) and top rated (first 5) movies
+        const trendingMovies = trendingResponse.data.results.slice(0, 5);
+        const topRatedMovies = topRatedResponse.data.results.slice(0, 5);
+        
+        // Combine and shuffle for variety
+        const combinedFeatured = [...trendingMovies, ...topRatedMovies];
+        setFeaturedMovies(combinedFeatured.slice(0, 10));
       } catch (error) {
         console.error("Error fetching featured movies:", error);
       }
@@ -63,7 +72,7 @@ export default function MoviesPage() {
     fetchFeaturedMovies();
   }, [API_KEY]);
 
-  // Fetch all movies
+  // Fetch all movies (discover with different sorting than featured)
   useEffect(() => {
     const fetchMovies = async () => {
       setLoading(true);
@@ -73,6 +82,10 @@ export default function MoviesPage() {
         if (selectedGenre) {
           url += `&with_genres=${selectedGenre}`;
         }
+
+        // Add date filters to get more recent movies for "All Movies"
+        const currentYear = new Date().getFullYear();
+        url += `&primary_release_date.gte=${currentYear - 3}-01-01`; // Movies from last 3 years
 
         const response = await axios.get(url);
         setMovies(response.data.results);
@@ -86,16 +99,6 @@ export default function MoviesPage() {
 
     fetchMovies();
   }, [currentPage, selectedGenre, sortBy, API_KEY]);
-
-  const handleGenreFilter = (genreId: number | null) => {
-    setSelectedGenre(genreId);
-    setCurrentPage(1);
-  };
-
-  const handleSortChange = (newSort: string) => {
-    setSortBy(newSort);
-    setCurrentPage(1);
-  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -119,8 +122,9 @@ export default function MoviesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen mt-15 bg-zinc-950 text-white">
       <div className="max-w-7xl mx-auto px-4 py-8">
+
         {/* Featured Movies Section */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-6">
@@ -150,6 +154,14 @@ export default function MoviesPage() {
                   <div className="absolute top-3 left-3 bg-red-600 text-white px-2 py-1 rounded text-xs font-semibold">
                     FEATURED
                   </div>
+
+                  {/* Rating Badge */}
+                  {movie.vote_average > 0 && (
+                    <div className="absolute top-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                      <Star size={12} className="fill-yellow-400 text-yellow-400" />
+                      {movie.vote_average.toFixed(1)}
+                    </div>
+                  )}
 
                   {/* Movie Title Overlay */}
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
@@ -202,6 +214,14 @@ export default function MoviesPage() {
                           </div>
                         )}
                       </div>
+
+                      {/* Rating Badge */}
+                      {movie.vote_average > 0 && (
+                        <div className="absolute top-3 right-3 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                          <Star size={12} className="fill-yellow-400 text-yellow-400" />
+                          {movie.vote_average.toFixed(1)}
+                        </div>
+                      )}
 
                       {/* Movie Title Overlay */}
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">

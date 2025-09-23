@@ -121,7 +121,7 @@ export default function WatchMovie(props: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white">
+    <div className="min-h-screen mt-15 bg-zinc-950 text-white">
       {/* Sticky Header */}
       <div className="sticky top-0 z-20 bg-zinc-950/80 backdrop-blur border-b border-zinc-800 px-4 py-3">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
