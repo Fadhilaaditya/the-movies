@@ -98,7 +98,7 @@ export default function WatchMovie(props: Props) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
+      <div className="min-h-screen mt-15 bg-zinc-950 text-white flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
           <p>Loading...</p>
@@ -109,7 +109,7 @@ export default function WatchMovie(props: Props) {
 
   if (error || !contentData) {
     return (
-      <div className="min-h-screen bg-zinc-950 text-white flex items-center justify-center">
+      <div className="min-h-screen mt-15 bg-zinc-950 text-white flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error || "Content not found"}</p>
           <Link href="/" className="text-blue-500 hover:underline">
@@ -121,9 +121,9 @@ export default function WatchMovie(props: Props) {
   }
 
   return (
-    <div className="min-h-screen mt-15 bg-zinc-950 text-white">
+    <div className="min-h-screen bg-zinc-950 text-white">
       {/* Sticky Header */}
-      <div className="sticky top-0 z-20 bg-zinc-950/80 backdrop-blur border-b border-zinc-800 px-4 py-3">
+      <div className="sticky mt-15 top-0 z-20 bg-zinc-950/80 backdrop-blur border-b border-zinc-800 px-4 py-3">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link
             href={contentData.backUrl}

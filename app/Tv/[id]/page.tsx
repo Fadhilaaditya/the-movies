@@ -60,7 +60,6 @@ export default async function TvDetail({ params }: Params) {
               {/* Meta info */}
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300 mb-4">
                 <span>{new Date(tv.first_air_date).getFullYear()}</span>
-                <span className="text-red-500">Netflix</span> {/* You can make this dynamic */}
               </div>
 
               {/* Rating */}
@@ -103,9 +102,6 @@ export default async function TvDetail({ params }: Params) {
                     Watch Now
                   </button>
                 </Link>
-                <button className="bg-zinc-800 hover:bg-zinc-700 transition px-6 py-2 rounded text-white">
-                  Add to Watchlist
-                </button>
               </div>
             </div>
           </div>
