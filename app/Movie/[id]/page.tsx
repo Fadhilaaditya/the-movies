@@ -43,15 +43,18 @@ export default async function MovieDetail({
             {movie.release_date} • {movie.runtime} mins
           </p>
 
-          {/* Genres */}
+          {/* Genres - Updated dengan Link ke Category */}
           <div className="flex flex-wrap gap-2 mb-4">
             {movie.genres.map((genre: any) => (
-              <span
-                key={genre.id}
-                className="bg-zinc-800 text-sm px-3 py-1 rounded-full border border-zinc-700 text-gray-300"
+              <Link 
+                key={genre.id} 
+                href={`/Category/${genre.id}?name=${encodeURIComponent(genre.name)}`}
+                className="group"
               >
-                {genre.name}
-              </span>
+                <span className="bg-zinc-800 text-sm px-3 py-1 rounded-full border border-zinc-700 text-gray-300 hover:bg-zinc-700 hover:border-zinc-600 hover:text-white transition-all duration-200 cursor-pointer group-hover:shadow-md">
+                  {genre.name}
+                </span>
+              </Link>
             ))}
           </div>
 

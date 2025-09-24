@@ -87,7 +87,7 @@ export default function YearPage() {
   return (
     <div className="px-4 py-6 max-w-7xl mx-auto text-white">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex mt-15 items-center justify-between mb-6">
         <h1 className="text-xl font-semibold">
           Movies Released in: <span className="text-red-500">{year}</span>
         </h1>
