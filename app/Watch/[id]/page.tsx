@@ -30,7 +30,6 @@ export default function WatchMovie(props: Props) {
   const [contentData, setContentData] = useState<ContentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const id = props.params.id;
   const season = props.searchParams?.season || "1";
   const episode = props.searchParams?.episode || "1";
@@ -50,7 +49,12 @@ export default function WatchMovie(props: Props) {
         let episodeName = "";
 
         if (isTV || type === 'tv') {
-          embedUrl = `https://vidsrc.icu/embed/tv/${id}/${season}/${episode}`;
+          embedUrl = `https://vidsrc.me/embed/tv?tmdb=${id}&season=${season}&episode=${episode}`;
+        } else {
+          embedUrl = `https://vidsrc.me/embed/movie?tmdb=${id}`;
+        }
+
+        if (isTV || type === 'tv') {
           const tvRes = await axios.get(
             `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}`
           );
@@ -70,7 +74,6 @@ export default function WatchMovie(props: Props) {
             console.error("Error fetching episode name:", error);
           }
         } else {
-          embedUrl = `https://vidsrc.icu/embed/movie/${id}`;
           const movieRes = await axios.get(
             `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}`
           );
@@ -163,13 +166,14 @@ export default function WatchMovie(props: Props) {
             className="w-full h-full"
             allowFullScreen
             loading="lazy"
+            referrerPolicy="no-referrer"
           />
         </div>
 
         {/* Controls */}
         <div className="flex items-center justify-between text-sm text-gray-400">
           <span>💬 Subtitle: Auto / English</span>
-          <span>🎚️ Quality: Auto</span>
+          <span>🎚️ Quality: Auto HD</span>
         </div>
 
         {/* Overview */}
