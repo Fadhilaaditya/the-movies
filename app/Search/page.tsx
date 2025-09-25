@@ -62,7 +62,7 @@ function SearchResultsContent() {
   }, [query, page, API_KEY, hasMore]);
 
   return (
-    <div className="px-4 py-6 max-w-7xl mx-auto text-white">
+    <div className="px-4 mt-15 py-6 max-w-7xl mx-auto text-white">
       <h1 className="text-xl font-semibold mb-4">
         Search Results for: <span className="text-red-500">{query}</span>
       </h1>
