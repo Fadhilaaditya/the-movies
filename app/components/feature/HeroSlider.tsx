@@ -148,20 +148,31 @@ export default function Hero() {
   return (
     <div className="relative w-full h-[85vh] overflow-hidden">
       {currentMovie.trailer_key ? (
-        <div className="absolute inset-0 w-full h-full">
-          <iframe
-            className="absolute inset-0 w-full h-full object-cover"
-            src={`https://www.youtube.com/embed/${currentMovie.trailer_key}?autoplay=1&mute=1&loop=1&playlist=${currentMovie.trailer_key}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&start=10`}
-            allow="autoplay; encrypted-media"
-            allowFullScreen={false}
+        <div className="absolute inset-0 w-full h-full overflow-hidden">
+          <div className="absolute inset-0 flex items-center justify-center min-w-full min-h-full"
             style={{
-              minWidth: '100%', minHeight: '100%',
-              width: '100vw', height: '100vh',
-              transform: 'scale(1.2)',
-              transformOrigin: 'center center'
+              width: '100%',
+              height: '100%',
+              aspectRatio: '16/9',
             }}
-            onLoad={() => setVideoLoaded(true)}
-          />
+          >
+            <iframe
+              className="absolute"
+              src={`https://www.youtube.com/embed/${currentMovie.trailer_key}?autoplay=1&mute=1&loop=1&playlist=${currentMovie.trailer_key}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&start=10`}
+              allow="autoplay; encrypted-media"
+              allowFullScreen={false}
+              style={{
+                width: '177.78vh',
+                height: '100vh',
+                minWidth: '100%',
+                minHeight: '56.25vw',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%) scale(1.1)',
+              }}
+              onLoad={() => setVideoLoaded(true)}
+            />
+          </div>
           {!videoLoaded && (
             <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${currentMovie.backdrop_path})` }} />
           )}
@@ -177,55 +188,55 @@ export default function Hero() {
 
       <div className="relative z-10 h-full flex items-center">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="max-w-xl">
-            <div className="mb-4">
+          <div className="max-w-3xl">
+            <div className="mb-6">
               {currentMovie.logo_path ? (
                 <div className="logo-container">
-                  <img src={`https://image.tmdb.org/t/p/w500${currentMovie.logo_path}`} alt={currentMovie.title} className="h-14 md:h-18 lg:h-20 max-w-xs object-contain" onError={(e) => {
+                  <img src={`https://image.tmdb.org/t/p/w500${currentMovie.logo_path}`} alt={currentMovie.title} className="h-20 md:h-28 lg:h-36 max-w-md md:max-w-lg object-contain drop-shadow-2xl" onError={(e) => {
                     const container = (e.target as HTMLElement).parentElement;
-                    if (container) { container.innerHTML = `<h1 class="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight tracking-wide">${currentMovie.title.toUpperCase()}</h1>`; }
+                    if (container) { container.innerHTML = `<h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight drop-shadow-2xl">${currentMovie.title.toUpperCase()}</h1>`; }
                   }} />
                 </div>
               ) : (
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-light text-white leading-tight tracking-wide">{currentMovie.title.toUpperCase()}</h1>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight drop-shadow-2xl">{currentMovie.title.toUpperCase()}</h1>
               )}
             </div>
 
-            <div className="flex flex-wrap items-center gap-3 mb-4 text-xs text-slate-300">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4 mb-6 text-sm md:text-base text-slate-200">
               <div className="flex items-center gap-1.5">
-                <Star size={14} className="fill-yellow-400 text-yellow-400" />
-                <span className="text-white font-medium">{currentMovie.vote_average.toFixed(1)}/10</span>
+                <Star size={18} className="fill-yellow-400 text-yellow-400" />
+                <span className="text-white font-semibold">{currentMovie.vote_average.toFixed(1)}/10</span>
               </div>
               {currentMovie.release_date && (
-                <span className="border border-white/20 px-2 py-0.5 bg-white/5 text-xs">{new Date(currentMovie.release_date).getFullYear()}</span>
+                <span className="border border-white/20 px-2.5 py-1 bg-white/5 text-sm rounded">{new Date(currentMovie.release_date).getFullYear()}</span>
               )}
               {currentMovie.genres?.slice(0, 2).map((genre) => (
-                <span key={genre.id} className="text-slate-300 text-sm">{genre.name}</span>
+                <span key={genre.id} className="text-slate-200 text-sm md:text-base">{genre.name}</span>
               ))}
             </div>
 
-            <p className="text-slate-400 text-sm leading-relaxed mb-8 max-w-md font-light line-clamp-3">
-              {currentMovie.overview.length > 150 ? `${currentMovie.overview.substring(0, 150)}...` : currentMovie.overview}
+            <p className="text-slate-200 text-base md:text-lg leading-relaxed mb-8 max-w-2xl font-light line-clamp-3 md:line-clamp-4 drop-shadow-md">
+              {currentMovie.overview.length > 220 ? `${currentMovie.overview.substring(0, 220)}...` : currentMovie.overview}
             </p>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3 md:gap-4">
               <Link href={`/Watch/${currentMovie.id}`}>
-                <button className="flex items-center gap-2 bg-white text-slate-950 px-6 py-2.5 rounded-full font-medium text-sm hover:bg-slate-100 transition-all duration-300 shadow-lg hover:shadow-white/10">
-                  <Play size={15} className="fill-slate-950" />
+                <button className="flex items-center gap-2 bg-white text-slate-950 px-7 py-3 md:px-8 md:py-3.5 rounded-full font-semibold text-base hover:bg-slate-100 transition-all duration-300 shadow-lg hover:shadow-white/10">
+                  <Play size={18} className="fill-slate-950" />
                   Play
                 </button>
               </Link>
               <Link href={`/Movie/${currentMovie.id}`}>
-                <button className="flex items-center gap-2 border border-white/20 bg-white/5 backdrop-blur-sm text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-white/10 transition-all duration-300">
-                  <Info size={15} />
+                <button className="flex items-center gap-2 border border-white/20 bg-white/10 backdrop-blur-sm text-white px-7 py-3 md:px-8 md:py-3.5 rounded-full font-semibold text-base hover:bg-white/20 transition-all duration-300">
+                  <Info size={18} />
                   Details
                 </button>
               </Link>
             </div>
 
-            <div className="flex items-center gap-2 mt-8">
+            <div className="flex items-center gap-2 mt-10">
               {movies.map((_, index) => (
-                <button key={index} onClick={() => handleSlideChange(index)} className={`h-1 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-8 bg-rose-500' : 'w-4 bg-white/20 hover:bg-white/40'}`} aria-label={`Go to slide ${index + 1}`} />
+                <button key={index} onClick={() => handleSlideChange(index)} className={`h-1.5 rounded-full transition-all duration-500 ${index === currentSlide ? 'w-10 bg-rose-500' : 'w-5 bg-white/20 hover:bg-white/40'}`} aria-label={`Go to slide ${index + 1}`} />
               ))}
             </div>
           </div>
