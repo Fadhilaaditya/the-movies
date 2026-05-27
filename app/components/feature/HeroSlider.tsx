@@ -149,30 +149,19 @@ export default function Hero() {
     <div className="relative w-full h-[60vh] md:h-[85vh] overflow-hidden">
       {currentMovie.trailer_key ? (
         <div className="absolute inset-0 w-full h-full overflow-hidden">
-          <div className="absolute inset-0 flex items-center justify-center min-w-full min-h-full"
+          <iframe
+            className="absolute"
+            src={`https://www.youtube.com/embed/${currentMovie.trailer_key}?autoplay=1&mute=1&loop=1&playlist=${currentMovie.trailer_key}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&start=10`}
+            allow="autoplay; encrypted-media"
+            allowFullScreen={false}
             style={{
+              top: '-15%',
+              left: '0',
               width: '100%',
-              height: '100%',
-              aspectRatio: '16/9',
+              height: '130%',
             }}
-          >
-            <iframe
-              className="absolute"
-              src={`https://www.youtube.com/embed/${currentMovie.trailer_key}?autoplay=1&mute=1&loop=1&playlist=${currentMovie.trailer_key}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&playsinline=1&start=10`}
-              allow="autoplay; encrypted-media"
-              allowFullScreen={false}
-              style={{
-                width: '177.78vh',
-                height: '100vh',
-                minWidth: '100%',
-                minHeight: '56.25vw',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%) scale(1.1)',
-              }}
-              onLoad={() => setVideoLoaded(true)}
-            />
-          </div>
+            onLoad={() => setVideoLoaded(true)}
+          />
           {!videoLoaded && (
             <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${currentMovie.backdrop_path})` }} />
           )}
