@@ -10,7 +10,7 @@ export default async function NowPlaying() {
   );
   const movies = res.data.results;
   return (
-    <section className="py-12 max-w-7xl mx-auto px-6">
+    <section className="py-4 md:py-10 max-w-7xl mx-auto px-6">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-1 h-6 rounded-full bg-gradient-to-b from-rose-500 to-pink-500"></div>
         <h2 className="text-xl font-semibold text-white tracking-tight">Now Playing</h2>
