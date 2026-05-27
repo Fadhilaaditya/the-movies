@@ -10,18 +10,18 @@ export default async function PopularMovies() {
   const movies = response.data.results;
 
   return (
-    <section className="py-10 max-w-7xl mx-auto">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-1 h-8 bg-red-600"></div>
-            <h2 className="text-2xl text-white font-bold">Popular Movies</h2>
-          </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+    <section className="py-12 max-w-7xl mx-auto px-6">
+      <div className="flex items-center gap-3 mb-8">
+        <div className="w-1 h-6 rounded-full bg-gradient-to-b from-rose-500 to-pink-500"></div>
+        <h2 className="text-xl font-semibold text-white tracking-tight">Popular Movies</h2>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {movies.map((movie: any) => (
           <SearchResultCard
             key={`popular-${movie.id}`}
             item={{
               ...movie,
-              media_type: "movie", // ensure correct route handling
+              media_type: "movie",
             }}
           />
         ))}

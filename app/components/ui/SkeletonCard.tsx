@@ -1,12 +1,9 @@
 export default function SkeletonCard() {
-    return (
-      <div className="bg-zinc-800 animate-pulse rounded-lg overflow-hidden shadow">
-        <div className="h-[300px] bg-zinc-700" />
-        <div className="p-2 space-y-2">
-          <div className="h-4 bg-zinc-700 rounded w-3/4"></div>
-          <div className="h-3 bg-zinc-700 rounded w-1/2"></div>
-        </div>
+  return (
+    <div className="rounded-2xl overflow-hidden bg-slate-900 border border-white/5">
+      <div className="relative h-[280px] bg-slate-800 animate-shimmer overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-800 via-slate-700/50 to-slate-800 animate-pulse" />
       </div>
-    );
-  }
-  
+    </div>
+  );
+}

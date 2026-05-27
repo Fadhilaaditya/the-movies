@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-/* Define Indonesian flag color scheme with bone white background */
 :root {
-  --background: #09090b; /* bone white */
-  --foreground: #FF0000; /* red */
-  --accent: #FF0000;
+  --background: #020617;
+  --foreground: #f8fafc;
+  --accent: #f43f5e;
+  --accent-secondary: #ec4899;
   --font-sans: 'Plus Jakarta Sans', sans-serif;
 }
 
@@ -20,6 +20,37 @@ body {
   font-family: var(--font-sans);
 }
 
-.bg-accent {
-  background-color: var(--accent);
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.05) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -62,38 +62,37 @@ function SearchResultsContent() {
   }, [query, page, API_KEY, hasMore]);
 
   return (
-    <div className="px-4 mt-15 py-6 max-w-7xl mx-auto text-white">
-      <h1 className="text-xl font-semibold mb-4">
-        Search Results for: <span className="text-red-500">{query}</span>
-      </h1>
+    <div className="px-4 mt-15 py-8 max-w-7xl mx-auto text-white">
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-1 h-6 rounded-full bg-gradient-to-b from-rose-500 to-pink-500"></div>
+        <h1 className="text-xl font-semibold tracking-tight">
+          Search Results for: <span className="bg-gradient-to-r from-rose-500 to-pink-500 bg-clip-text text-transparent">{query}</span>
+        </h1>
+      </div>
 
       {initialLoading && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4">
-          {Array.from({ length: 10 }).map((_, idx) => (
-            <SkeletonCard key={idx} />
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {Array.from({ length: 10 }).map((_, idx) => <SkeletonCard key={idx} />)}
         </div>
       )}
 
       {!initialLoading && (
         <>
           {results.length === 0 ? (
-            <p className="text-gray-400">No results found.</p>
+            <p className="text-slate-500 py-12 text-center">No results found.</p>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {results.map((item: any) => (
-                <SearchResultCard key={`${item.media_type}-${item.id}`} item={item} />
-              ))}
+              {results.map((item: any) => <SearchResultCard key={`${item.media_type}-${item.id}`} item={item} />)}
             </div>
           )}
         </>
       )}
 
       {!initialLoading && hasMore && (
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           <button
             onClick={() => setPage((prev) => prev + 1)}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded shadow"
+            className="bg-white/5 backdrop-blur-sm border border-white/10 text-slate-300 hover:bg-white/10 hover:text-white px-6 py-2.5 rounded-full font-medium text-sm transition"
             disabled={loading}
           >
             {loading ? 'Loading...' : 'Load More'}

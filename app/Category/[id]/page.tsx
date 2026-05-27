@@ -97,10 +97,10 @@ export default function CategoryPage() {
 
   if (loading) {
     return (
-      <div className="bg-zinc-950 min-h-screen text-white">
+      <div className="bg-slate-950 min-h-screen text-white">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center min-h-[60vh]">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600"></div>
+            <div className="relative w-10 h-10"><div className="absolute inset-0 rounded-full border-2 border-slate-800"></div><div className="absolute inset-0 rounded-full border-2 border-transparent border-t-rose-500 animate-spin"></div></div>
           </div>
         </div>
       </div>
@@ -108,84 +108,37 @@ export default function CategoryPage() {
   }
 
   return (
-    <div className="bg-zinc-950 mt-15 min-h-screen text-white">
-      <div className="container mx-auto py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-4xl font-light text-center mb-2">
-            {genreName}
-          </h1>
-          <div className="w-24 h-1 bg-red-600 mx-auto mb-6"></div>
+    <div className="bg-slate-950 mt-15 min-h-screen text-white">
+      <div className="container mx-auto py-10 px-4">
+        <div className="mb-8 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">{genreName}</h1>
+          <div className="w-16 h-1 rounded-full bg-gradient-to-r from-rose-500 to-pink-500 mx-auto mt-4"></div>
         </div>
 
-        {/* Recently Added Section */}
         <div className="mb-8">
-          <div className="flex items-center mb-6">
-            <div className="w-1 h-8 bg-red-600 mr-4"></div>
-            <h2 className="text-xl font-medium">Recently added</h2>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-6 rounded-full bg-gradient-to-b from-rose-500 to-pink-500"></div>
+            <h2 className="text-lg font-medium text-slate-300">Results</h2>
           </div>
 
-          {/* Movies Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {movies.map((movie) => (
-              <Link key={movie.id} href={`/Movie/${movie.id}`}>
-                <div className="group cursor-pointer">
-                  <div className="relative mb-3 overflow-hidden rounded-lg ">
-                    {/* Movie Poster */}
-                    <img
-                      src={
-                        movie.poster_path
-                          ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                          : '/placeholder-poster.jpg'
-                      }
-                      alt={movie.title}
-                      className="w-full h-[220px] sm:h-[240px] md:h-[260px] object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                    
-                    {/* Overlay dengan informasi */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="absolute bottom-0 left-0 right-0 p-3">
-                        <div className="flex items-center justify-between text-xs text-white/90 mb-1">
-                          <span className="bg-yellow-500 text-black px-2 py-1 rounded font-semibold">
-                            {movie.vote_average.toFixed(1)}
-                          </span>
-                        </div>
-                        <p className="text-xs text-white/80 line-clamp-2 leading-relaxed">
-                          {movie.overview.length > 80
-                            ? `${movie.overview.substring(0, 80)}...`
-                            : movie.overview}
-                        </p>
-                      </div>
+              <Link key={movie.id} href={`/Movie/${movie.id}`} className="group block">
+                <div className="relative rounded-2xl overflow-hidden bg-slate-900 border border-white/5 hover:shadow-rose-500/10 hover:shadow-xl hover:scale-[1.03] hover:border-white/10 transition-all duration-300">
+                  {movie.poster_path && (
+                    <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.title} className="w-full h-[200px] sm:h-[220px] md:h-[260px] object-cover group-hover:scale-110 transition-transform duration-300" />
+                  )}
+                  {!movie.poster_path && (
+                    <div className="w-full h-[220px] bg-slate-800 flex items-center justify-center text-slate-600">No image</div>
+                  )}
+                  {movie.vote_average > 0 && (
+                    <div className="absolute top-2.5 right-2.5 flex items-center gap-1 bg-black/50 backdrop-blur-sm border border-white/10 text-white text-xs font-medium px-2 py-0.5 rounded-full">
+                      <Star size={11} className="fill-yellow-400 text-yellow-400" />{movie.vote_average.toFixed(1)}
                     </div>
-
-                    {/* Quality Badges - Sample badges like in the reference */}
-                    <div className="absolute top-2 right-2 flex flex-col gap-1">
-                      {Math.random() > 0.7 && (
-                        <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded font-semibold">
-                          BLURAY
-                        </span>
-                      )}
-                      {Math.random() > 0.8 && (
-                        <span className="bg-green-600 text-white text-xs px-2 py-1 rounded font-semibold">
-                          CAM
-                        </span>
-                      )}
-                      {Math.random() > 0.9 && (
-                        <span className="bg-orange-600 text-white text-xs px-2 py-1 rounded font-semibold">
-                          WEBDL
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Movie Info */}
-                  <div className="text-center">
-                    <h3 className="text-sm font-medium text-white group-hover:text-red-400 transition-colors duration-200 line-clamp-2 mb-1 leading-tight">
-                      {movie.title}
-                    </h3>
-                    <p className="text-xs text-gray-400">
-                      {formatDate(movie.release_date)}
-                    </p>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+                    <h3 className="text-white text-sm font-medium line-clamp-2">{movie.title}</h3>
+                    {movie.release_date && <p className="text-slate-400 text-xs mt-1">{new Date(movie.release_date).getFullYear()}</p>}
                   </div>
                 </div>
               </Link>
@@ -193,56 +146,34 @@ export default function CategoryPage() {
           </div>
         </div>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center mt-12 mb-8">
             <div className="flex items-center gap-2">
-              {/* Previous Button */}
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="px-4 py-2 text-sm bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed rounded transition-colors"
-              >
+              <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1} className="px-4 py-2 text-sm bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 disabled:opacity-40 disabled:cursor-not-allowed rounded-full transition">
                 Previous
               </button>
-
-              {/* Page Numbers */}
               {getPaginationNumbers().map((page, index) => (
                 <div key={index}>
                   {page === '...' ? (
-                    <span className="px-3 py-2 text-gray-400">...</span>
+                    <span className="px-3 py-2 text-slate-600">...</span>
                   ) : (
-                    <button
-                      onClick={() => handlePageChange(page as number)}
-                      className={`px-4 py-2 text-sm rounded transition-colors ${
-                        currentPage === page
-                          ? 'bg-red-600 text-white'
-                          : 'bg-zinc-800 hover:bg-zinc-700 text-gray-300 hover:text-white'
-                      }`}
-                    >
+                    <button onClick={() => handlePageChange(page as number)} className={`px-4 py-2 text-sm rounded-full transition ${currentPage === page ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white' : 'bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10'}`}>
                       {page}
                     </button>
                   )}
                 </div>
               ))}
-
-              {/* Next Button */}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="px-4 py-2 text-sm bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed rounded transition-colors"
-              >
+              <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages} className="px-4 py-2 text-sm bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 disabled:opacity-40 disabled:cursor-not-allowed rounded-full transition">
                 Next
               </button>
             </div>
           </div>
         )}
 
-        {/* No movies found */}
         {!loading && movies.length === 0 && (
           <div className="text-center py-12">
-            <h3 className="text-xl text-gray-400 mb-2">No movies found</h3>
-            <p className="text-gray-500">Try browsing other categories</p>
+            <h3 className="text-lg text-slate-500 mb-2">No movies found</h3>
+            <p className="text-slate-600">Try browsing other categories</p>
           </div>
         )}
       </div>
